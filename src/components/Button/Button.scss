@@ -1,0 +1,17 @@
+.button {
+  height: 32px;
+  min-width: 32px;
+  border: none;
+  background: none;
+  font-family: 'Inter';
+  font-size: 16px;
+  line-height: 140%;
+  display: flex;
+  align-items: center;
+  padding: 4px;
+  gap: 8px;
+}
+
+button {
+  color: #f2f2f2;
+}

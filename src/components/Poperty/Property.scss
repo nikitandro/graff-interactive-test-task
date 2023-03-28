@@ -1,0 +1,16 @@
+.property {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 24px;
+
+  &__name {
+    font-size: 16px;
+    color: #818798;
+  }
+
+  &__value {
+    font-size: 16px;
+    color: #f2f2f2;
+  }
+}
