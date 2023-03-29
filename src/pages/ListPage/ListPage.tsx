@@ -3,6 +3,7 @@ import { ListItem } from '../../components/ListItem/ListItem';
 import './ListPage.scss';
 import filtersIcon from '../../assets/icons/Filters.svg';
 import { Input } from '../../components/Input/Input';
+import { Check } from '../../components/Check/Check';
 
 export const ListPage = () => {
   return (
@@ -12,7 +13,9 @@ export const ListPage = () => {
           <div className='filter-section'>
             <h1 className='filter-section__title'>Фильтры</h1>
             <div className='filter-section__inputs'>
-              <Input title='Title' type='text' />
+              {/* <Input title='Title' type='search' placeholder='Название' />
+               */}
+              <Check />
             </div>
           </div>
         </aside>
