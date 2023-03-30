@@ -25,4 +25,8 @@ export interface IFilterOption {
   isChecked: boolean;
 }
 
-export type IRadioButtonValues = 'test1' | 'test2' | '';
+export interface IRadioButtonValues {
+  [key: string]: IRadioButtonTitle;
+}
+
+export type IRadioButtonTitle = string;

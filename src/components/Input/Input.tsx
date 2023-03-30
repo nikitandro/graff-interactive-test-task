@@ -1,14 +1,20 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import './Input.scss';
 import { Check } from '../Check/Check';
-import { IFilterOptions } from '../../store/slices/filterSlice/filterSlice.types';
+import {
+  IFilterOptions,
+  IRadioButtonValues,
+} from '../../store/slices/filterSlice/filterSlice.types';
 import chevronDownIcon from '../../assets/icons/Chevron_Down.svg';
+import { RadioButton } from '../RadioButton/RadioButton';
 
 export const Input = (props: IInputProps) => {
   if (props.type === 'list') {
     return <ListInput {...props} />;
   } else if (props.type === 'text') {
     return <SearchInput {...props} />;
+  } else if (props.type === 'radio') {
+    return <RadioInput {...props} />;
   }
   throw new Error('Incorrect input type.');
 };
@@ -37,14 +43,6 @@ const SearchInput = ({ title, type, placeholder }: ISearchInputProps) => {
   );
 };
 
-export interface ISearchInputProps {
-  title?: string;
-  type: 'text';
-  placeholder?: string;
-}
-
-export type IInputProps = ISearchInputProps | IListInputProps;
-
 const ListInput = ({ title, onSelect, checkList }: IListInputProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [checkedOptions, setCheckedOptions] = useState<IFilterOptions>(
@@ -71,10 +69,6 @@ const ListInput = ({ title, onSelect, checkList }: IListInputProps) => {
     const filterOptions: IFilterOptions = { ...checkList };
     setCheckedOptions(filterOptions);
   }, [checkList]);
-
-  useEffect(() => {
-    console.log(checkedOptions);
-  }, [checkedOptions]);
   return (
     <>
       <div className='input'>
@@ -82,7 +76,7 @@ const ListInput = ({ title, onSelect, checkList }: IListInputProps) => {
         <div className='input__wrapper'>
           <div
             className={
-              'input__input input__input_list ' +
+              'input__input input__input_list unselectable ' +
               (isOpen ? 'input__input_open' : '')
             }
             onClick={toggleIsOpen}
@@ -129,9 +123,60 @@ const ListInput = ({ title, onSelect, checkList }: IListInputProps) => {
   );
 };
 
+const RadioInput = ({ title, onSelect, radios }: IRadioInputProps) => {
+  const [radiosState, setRadiosState] = useState<IRadioButtonValues>(
+    radios ? radios : {}
+  );
+  const [currentCheckedRadioButton, setCurrentCheckedRadioButton] = useState<
+    string | undefined
+  >(undefined);
+
+  useEffect(() => {
+    onSelect && onSelect(currentCheckedRadioButton);
+  }, [currentCheckedRadioButton]);
+  return (
+    <div className='radio-input'>
+      <p className='input__title'>{title}</p>
+      <div className='radio-input__buttons'>
+        {Object.entries(radiosState).map(([valueName, title]) => {
+          return (
+            <RadioButton
+              title={title}
+              key={valueName}
+              onCheck={(checkedValueName) => {
+                setCurrentCheckedRadioButton(checkedValueName);
+              }}
+              currentCheckedRadioButton={currentCheckedRadioButton}
+              valueName={valueName}
+            />
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
+export interface ISearchInputProps {
+  title?: string;
+  type: 'text';
+  placeholder?: string;
+}
+
+export type IInputProps =
+  | ISearchInputProps
+  | IListInputProps
+  | IRadioInputProps;
+
 export interface IListInputProps {
   title?: string;
   type: 'list';
-  onSelect?: () => string[];
+  onSelect?: (filterOptions: IFilterOptions) => void;
   checkList?: IFilterOptions;
+}
+
+export interface IRadioInputProps {
+  title?: string;
+  type: 'radio';
+  onSelect?: (selectedRadioButton: string | undefined) => void;
+  radios?: IRadioButtonValues;
 }

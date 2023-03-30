@@ -14,9 +14,6 @@ export const Check = ({
     () => setInnerIsChecked((prev) => !prev),
     []
   );
-  // useEffect(() => {
-  //   setInnerIsChecked(isChecked);
-  // }, [isChecked]);
 
   useEffect(() => {
     if (onCheck) {
@@ -25,7 +22,7 @@ export const Check = ({
   }, [innerIsChecked]);
 
   return (
-    <div className='checkbox' onClick={toggleinnerIsChecked}>
+    <div className='checkbox unselectable' onClick={toggleinnerIsChecked}>
       <img
         src={innerIsChecked ? yesCheckBoxIcon : noCheckIcon}
         className='checkbox__icon'

@@ -3,8 +3,16 @@ import { ListItem } from '../../components/ListItem/ListItem';
 import './ListPage.scss';
 import filtersIcon from '../../assets/icons/Filters.svg';
 import { Input } from '../../components/Input/Input';
+import { RadioButton } from '../../components/RadioButton/RadioButton';
+import { useEffect, useState } from 'react';
+import { IRadioButtonValues } from '../../store/slices/filterSlice/filterSlice.types';
 
 export const ListPage = () => {
+  const [radios, setRadios] = useState<IRadioButtonValues>({ a: 'a', b: 'b' });
+  const [checkedRadioButton, setCheckedRadioButton] = useState<
+    string | undefined
+  >(undefined);
+
   return (
     <div className='page'>
       <div className='list-page'>
@@ -21,6 +29,7 @@ export const ListPage = () => {
                 }}
                 title='Выбор'
               />
+              <Input type='radio' radios={radios} title='Тип' />
             </div>
           </div>
         </aside>

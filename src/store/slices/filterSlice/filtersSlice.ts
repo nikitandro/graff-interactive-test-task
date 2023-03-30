@@ -6,7 +6,7 @@ const filtersSlice = createSlice<IFiltersState, IFilterSliceCaseReducers>({
   initialState: {
     title: '',
     options: {},
-    radio: 'test1',
+    radio: {},
   },
   reducers: {
     setTitleFilter(state, action): void {
