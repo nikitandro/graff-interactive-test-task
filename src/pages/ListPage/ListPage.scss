@@ -17,6 +17,12 @@
   right: 0;
   padding: 56px 40px;
 
+  &__inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
   &__title {
     font-family: 'Roboto';
     font-weight: 400;

@@ -1,4 +1,5 @@
 import { PayloadAction, SliceCaseReducers } from '@reduxjs/toolkit';
+
 import { IListState } from '../listSlice/listSlice.types';
 
 export interface IFiltersState {
@@ -15,8 +16,13 @@ export interface IFilterSliceCaseReducers
   ) => void;
 }
 
-export interface IFilterOptions {
-  [key: string]: boolean;
+export type IFilterOptions = {
+  [key: string]: IFilterOption;
+};
+
+export interface IFilterOption {
+  title: string;
+  isChecked: boolean;
 }
 
 export type IRadioButtonValues = 'test1' | 'test2' | '';

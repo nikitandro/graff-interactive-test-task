@@ -1,23 +1,43 @@
 import './Check.scss';
 import noCheckIcon from '../../assets/icons/CheckBox_No.svg';
 import yesCheckBoxIcon from '../../assets/icons/CheckBox_Yes.svg';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 
-export const Check = () => {
-  const [isChosen, setIsChosen] = useState<boolean>(true);
-  const toggleIsChosen = useCallback(() => {
-    setIsChosen((state) => !state);
-  }, []);
+export const Check = ({
+  title,
+  valueName,
+  onCheck,
+  isChecked,
+}: ICheckBoxProps) => {
+  const [innerIsChecked, setInnerIsChecked] = useState<boolean>(isChecked);
+  const toggleinnerIsChecked = useCallback(
+    () => setInnerIsChecked((prev) => !prev),
+    []
+  );
+  // useEffect(() => {
+  //   setInnerIsChecked(isChecked);
+  // }, [isChecked]);
+
+  useEffect(() => {
+    if (onCheck) {
+      onCheck(valueName, innerIsChecked);
+    }
+  }, [innerIsChecked]);
 
   return (
-    <div className='check' onClick={toggleIsChosen}>
+    <div className='checkbox' onClick={toggleinnerIsChecked}>
       <img
-        src={isChosen ? yesCheckBoxIcon : noCheckIcon}
-        className={
-          'check__icon ' + (isChosen ? 'check__icon_yes' : 'check__icon_no')
-        }
+        src={innerIsChecked ? yesCheckBoxIcon : noCheckIcon}
+        className='checkbox__icon'
       />
-      <p className='check__name'>Name</p>
+      <p className='checkbox__name'>{title}</p>
     </div>
   );
 };
+
+export interface ICheckBoxProps {
+  title: string;
+  onCheck?: (valueName: string, isChecked: boolean) => void;
+  isChecked: boolean;
+  valueName: string;
+}
