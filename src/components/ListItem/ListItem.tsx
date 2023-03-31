@@ -3,7 +3,12 @@ import arrowRightIcon from '../../assets/icons/Arrow_Right.svg';
 import { Property } from '../Poperty/Property';
 import { useCallback, useState } from 'react';
 
-export const ListItem = () => {
+export const ListItem = ({
+  typeName,
+  portName,
+  onClick,
+  shipName,
+}: IListItemProps) => {
   const [isHovered, setIsHovered] = useState<boolean>();
 
   const setHovered = useCallback(() => {
@@ -20,12 +25,13 @@ export const ListItem = () => {
       onMouseOver={setHovered}
       onMouseOut={resetTouchAndHover}
       onTouchEnd={resetTouchAndHover}
+      onClick={onClick}
     >
       <div className='list-item__payload'>
-        <h2 className='list-item__title'>Hello</h2>
+        <h2 className='list-item__title'>{shipName}</h2>
         <div className='list-item__properties'>
-          <Property name='Property1' value='Value1' />
-          <Property name='Property1' value='Value1' />
+          <Property name='Тип' value={typeName} />
+          <Property name='Порт' value={portName} />
         </div>
       </div>
       <img
@@ -37,3 +43,10 @@ export const ListItem = () => {
     </div>
   );
 };
+
+export interface IListItemProps {
+  shipName?: string;
+  typeName?: string;
+  portName?: string;
+  onClick?: () => void;
+}

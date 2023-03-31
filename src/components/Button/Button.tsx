@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import './Button.scss';
 
 export const Button = ({
@@ -7,7 +8,13 @@ export const Button = ({
   ...props
 }: IButtonProps) => {
   return (
-    <button className={'button ' + (className ? className : '')} {...props}>
+    <button
+      className={
+        `button ${children && icon ? '' : 'button_mono'}` +
+        (className ? className : '')
+      }
+      {...props}
+    >
       {icon ? <img src={icon} className='button__icon' /> : <></>}
       <span className='button__text'>{children}</span>
     </button>
@@ -16,6 +23,5 @@ export const Button = ({
 
 export interface IButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  children?: any;
   icon?: any;
 }

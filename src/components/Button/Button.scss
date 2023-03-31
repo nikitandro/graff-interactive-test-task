@@ -1,6 +1,6 @@
 .button {
   height: 32px;
-  min-width: 32px;
+
   border: none;
   background: none;
   font-family: 'Inter';
@@ -10,6 +10,10 @@
   align-items: center;
   padding: 4px;
   gap: 8px;
+
+  &_mono {
+    gap: 0;
+  }
 }
 
 button {

@@ -4,8 +4,8 @@ import { IListState } from '../listSlice/listSlice.types';
 
 export interface IFiltersState {
   title: string;
-  options: IFilterOptions;
-  radio: IRadioButtonValues;
+  options: IListFilterOptions;
+  radio: IRadioFilterOptions;
 }
 
 export interface IFilterSliceCaseReducers
@@ -16,16 +16,16 @@ export interface IFilterSliceCaseReducers
   ) => void;
 }
 
-export type IFilterOptions = {
-  [key: string]: IFilterOption;
+export type IListFilterOptions = {
+  [key: string]: IListFilterOption;
 };
 
-export interface IFilterOption {
+export interface IListFilterOption {
   title: string;
   isChecked: boolean;
 }
 
-export interface IRadioButtonValues {
+export interface IRadioFilterOptions {
   [key: string]: IRadioButtonTitle;
 }
 

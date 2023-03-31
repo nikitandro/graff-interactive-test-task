@@ -2,47 +2,87 @@ import { Button } from '../../components/Button/Button';
 import { ListItem } from '../../components/ListItem/ListItem';
 import './ListPage.scss';
 import filtersIcon from '../../assets/icons/Filters.svg';
+import arrowLeftIcon from '../../assets/icons/Arrow_Left.svg';
+import chevronLeftIcon from '../../assets/icons/Chevron_Left.svg';
+import chevronRightIcon from '../../assets/icons/Chevron_Right.svg';
 import { Input } from '../../components/Input/Input';
-import { RadioButton } from '../../components/RadioButton/RadioButton';
-import { useEffect, useState } from 'react';
-import { IRadioButtonValues } from '../../store/slices/filterSlice/filterSlice.types';
+import { useState } from 'react';
+import {
+  IListFilterOptions,
+  IRadioFilterOptions,
+} from '../../store/slices/filterSlice/filterSlice.types';
 
 export const ListPage = () => {
-  const [radios, setRadios] = useState<IRadioButtonValues>({ a: 'a', b: 'b' });
+  const [radioFilterOptions, setRadioFilterOptions] =
+    useState<IRadioFilterOptions>({ a: 'a', b: 'b' });
+  const [currentPageNumber, setCurrentPageNumber] = useState<number>(1);
+
+  const [listFilterOptions, setListFilterOptions] =
+    useState<IListFilterOptions>({
+      a: { isChecked: false, title: 'a' },
+      b: { isChecked: false, title: 'b' },
+    });
+
   const [checkedRadioButton, setCheckedRadioButton] = useState<
     string | undefined
   >(undefined);
 
+  const [isMobileFilterModalOpen, setIsMobileFilterModalOpen] =
+    useState<boolean>(false);
+
   return (
     <div className='page'>
       <div className='list-page'>
-        <aside>
-          <div className='filter-section'>
-            <h1 className='filter-section__title'>Фильтры</h1>
-            <div className='filter-section__inputs'>
-              <Input type='text' placeholder='Название' title='Поиск' />
-              <Input
-                type='list'
-                checkList={{
-                  a: { isChecked: false, title: 'aaaa' },
-                  b: { isChecked: false, title: 'bbbb' },
+        <aside
+          className='filter-wrapper'
+          style={{ zIndex: isMobileFilterModalOpen ? 1000 : -1000 }}
+        >
+          <div
+            className={
+              'filter-section ' +
+              (isMobileFilterModalOpen ? 'filter-section_open' : '')
+            }
+          >
+            <h1 className='filter-section__title'>
+              <Button
+                icon={arrowLeftIcon}
+                className='filter-section__title-icon'
+                onClick={() => {
+                  setIsMobileFilterModalOpen(false);
                 }}
-                title='Выбор'
               />
-              <Input type='radio' radios={radios} title='Тип' />
+              <span>Фильтры</span>
+            </h1>
+            <div className='filter-section__inputs'>
+              <Input type='text' placeholder='Название' title='Название' />
+              <Input type='list' checkList={listFilterOptions} title='Порт' />
+              <Input type='radio' radios={radioFilterOptions} title='Тип' />
             </div>
           </div>
         </aside>
         <main className='list-page__main'>
           <div className='list-section'>
-            <h1 className='list-section__title'>Game Of Thrones Characters</h1>
-            <Button icon={filtersIcon} className='list-section__filter-button'>
+            <h1 className='list-section__title'>SpaceX Ships</h1>
+            <Button
+              icon={filtersIcon}
+              className='list-section__filter-button'
+              onClick={() => {
+                setIsMobileFilterModalOpen(true);
+              }}
+            >
               Фильтры
             </Button>
             <div className='list'>
               <ListItem />
               <ListItem />
               <ListItem />
+              <ListItem />
+              <ListItem />
+            </div>
+            <div className='pagination'>
+              <Button icon={chevronLeftIcon} />
+              <Button>{currentPageNumber}</Button>
+              <Button icon={chevronRightIcon} />
             </div>
           </div>
         </main>

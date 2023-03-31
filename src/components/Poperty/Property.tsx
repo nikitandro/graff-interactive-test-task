@@ -1,8 +1,8 @@
 import './Property.scss';
 
 export interface IPopertyProps {
-  name: string;
-  value: string;
+  name?: string;
+  value?: string;
 }
 
 export const Property = ({ name, value }: IPopertyProps) => {
