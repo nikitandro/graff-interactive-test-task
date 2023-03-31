@@ -14,9 +14,6 @@ export const RadioButton = ({
       currentCheckedRadioButton === valueName ? undefined : valueName;
     onCheck && onCheck(emitedValueName);
   }, [currentCheckedRadioButton]);
-  useEffect(() => {
-    console.log(currentCheckedRadioButton);
-  }, [currentCheckedRadioButton]);
   return (
     <div className='radio-button unselectable' onClick={toggleIsChecked}>
       <img

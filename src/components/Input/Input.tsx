@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import './Input.scss';
-import { Check } from '../Check/Check';
+import { CheckBox } from '../Check/CheckBox';
 import {
   IFilterOptions,
   IRadioButtonValues,
@@ -19,7 +19,7 @@ export const Input = (props: IInputProps) => {
   throw new Error('Incorrect input type.');
 };
 
-const SearchInput = ({ title, type, placeholder }: ISearchInputProps) => {
+const SearchInput = ({ title, placeholder }: ISearchInputProps) => {
   const [isFocused, setIsFocused] = useState<boolean>();
   const setFocus = useCallback(() => {
     setIsFocused(true);
@@ -57,8 +57,8 @@ const ListInput = ({ title, onSelect, checkList }: IListInputProps) => {
   }, []);
   const checkedOptionsAmount = useMemo(() => {
     return Object.entries(checkedOptions)
-      .map(([_, isChecked]) => {
-        return Number(isChecked ? 1 : 0);
+      .map(([_, filterOption]) => {
+        return Number(filterOption.isChecked ? 1 : 0);
       })
       .reduce((prev, curr) => {
         return prev + curr;
@@ -98,7 +98,7 @@ const ListInput = ({ title, onSelect, checkList }: IListInputProps) => {
           >
             {Object.entries(checkedOptions).map(([key, filterOption]) => {
               return (
-                <Check
+                <CheckBox
                   title={filterOption.title}
                   isChecked={filterOption.isChecked}
                   key={key}

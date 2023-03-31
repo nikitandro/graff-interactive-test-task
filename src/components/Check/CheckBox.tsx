@@ -1,9 +1,9 @@
-import './Check.scss';
+import './CheckBox.scss';
 import noCheckIcon from '../../assets/icons/CheckBox_No.svg';
 import yesCheckBoxIcon from '../../assets/icons/CheckBox_Yes.svg';
 import { useState, useCallback, useEffect } from 'react';
 
-export const Check = ({
+export const CheckBox = ({
   title,
   valueName,
   onCheck,
