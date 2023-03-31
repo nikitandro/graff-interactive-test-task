@@ -1,11 +1,13 @@
 import { PayloadAction, SliceCaseReducers } from '@reduxjs/toolkit';
 
 import { IListState } from '../listSlice/listSlice.types';
+import store from '../..';
 
 export interface IFiltersState {
   title: string;
-  options: IListFilterOptions;
-  radio: IRadioFilterOptions;
+  portOptions: IListFilterOptions;
+  shipTypes: IRadioFilterOptions;
+  selectedShipType: string | undefined;
 }
 
 export interface IFilterSliceCaseReducers
@@ -13,6 +15,18 @@ export interface IFilterSliceCaseReducers
   setTitleFilter: (
     state: IFiltersState,
     action: PayloadAction<{ title: string }>
+  ) => void;
+  setPortOptions: (
+    state: IFiltersState,
+    action: PayloadAction<{ portOptions: IListFilterOptions }>
+  ) => void;
+  setShipTypes: (
+    state: IFiltersState,
+    action: PayloadAction<IRadioFilterOptions>
+  ) => void;
+  setSelectedShipType: (
+    state: IFiltersState,
+    action: PayloadAction<{ selectedShipType: string | undefined }>
   ) => void;
 }
 

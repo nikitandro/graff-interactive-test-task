@@ -6,26 +6,30 @@ import arrowLeftIcon from '../../assets/icons/Arrow_Left.svg';
 import chevronLeftIcon from '../../assets/icons/Chevron_Left.svg';
 import chevronRightIcon from '../../assets/icons/Chevron_Right.svg';
 import { Input } from '../../components/Input/Input';
-import { useState } from 'react';
-import {
-  IListFilterOptions,
-  IRadioFilterOptions,
-} from '../../store/slices/filterSlice/filterSlice.types';
+import { useCallback, useState } from 'react';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { setTitleFilter } from '../../store/slices/filterSlice/filtersSlice';
 
 export const ListPage = () => {
-  const [radioFilterOptions, setRadioFilterOptions] =
-    useState<IRadioFilterOptions>({ a: 'a', b: 'b' });
-  const [currentPageNumber, setCurrentPageNumber] = useState<number>(1);
+  const shipList = useAppSelector((state) => state.shipList);
+  const filters = useAppSelector((state) => state.filters);
+  const dispatch = useAppDispatch();
+  const setTitleFilterState = useCallback((value: string) => {
+    dispatch(setTitleFilter({ title: value }));
+  }, []);
+  // const [radioFilterOptions, setRadioFilterOptions] =
+  //   useState<IRadioFilterOptions>({ a: 'a', b: 'b' });
+  // const [currentPageNumber, setCurrentPageNumber] = useState<number>(1);
 
-  const [listFilterOptions, setListFilterOptions] =
-    useState<IListFilterOptions>({
-      a: { isChecked: false, title: 'a' },
-      b: { isChecked: false, title: 'b' },
-    });
+  // const [listFilterOptions, setListFilterOptions] =
+  //   useState<IListFilterOptions>({
+  //     a: { isChecked: false, title: 'a' },
+  //     b: { isChecked: false, title: 'b' },
+  //   });
 
-  const [checkedRadioButton, setCheckedRadioButton] = useState<
-    string | undefined
-  >(undefined);
+  // const [checkedRadioButton, setCheckedRadioButton] = useState<
+  //   string | undefined
+  // >(undefined);
 
   const [isMobileFilterModalOpen, setIsMobileFilterModalOpen] =
     useState<boolean>(false);
@@ -54,9 +58,14 @@ export const ListPage = () => {
               <span>Фильтры</span>
             </h1>
             <div className='filter-section__inputs'>
-              <Input type='text' placeholder='Название' title='Название' />
-              <Input type='list' checkList={listFilterOptions} title='Порт' />
-              <Input type='radio' radios={radioFilterOptions} title='Тип' />
+              <Input
+                type='text'
+                placeholder='Название'
+                title='Название'
+                onChange={setTitleFilterState}
+              />
+              <Input type='list' checkList={filters.portOptions} title='Порт' />
+              <Input type='radio' radios={filters.shipTypes} title='Тип' />
             </div>
           </div>
         </aside>
@@ -73,15 +82,20 @@ export const ListPage = () => {
               Фильтры
             </Button>
             <div className='list'>
-              <ListItem />
-              <ListItem />
-              <ListItem />
-              <ListItem />
-              <ListItem />
+              {shipList.map((value) => {
+                return (
+                  <ListItem
+                    shipType={value.shipType}
+                    portName={value.portName}
+                    shipName={value.shipName}
+                    id={value.id}
+                  />
+                );
+              })}
             </div>
             <div className='pagination'>
               <Button icon={chevronLeftIcon} />
-              <Button>{currentPageNumber}</Button>
+              <Button>{1}</Button>
               <Button icon={chevronRightIcon} />
             </div>
           </div>

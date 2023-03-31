@@ -2,12 +2,14 @@ import './ListItem.scss';
 import arrowRightIcon from '../../assets/icons/Arrow_Right.svg';
 import { Property } from '../Poperty/Property';
 import { useCallback, useState } from 'react';
+import { IListItem } from '../../store/slices/listSlice/listSlice.types';
 
 export const ListItem = ({
-  typeName,
   portName,
   onClick,
   shipName,
+  id,
+  shipType,
 }: IListItemProps) => {
   const [isHovered, setIsHovered] = useState<boolean>();
 
@@ -30,7 +32,7 @@ export const ListItem = ({
       <div className='list-item__payload'>
         <h2 className='list-item__title'>{shipName}</h2>
         <div className='list-item__properties'>
-          <Property name='Тип' value={typeName} />
+          <Property name='Тип' value={shipType} />
           <Property name='Порт' value={portName} />
         </div>
       </div>
@@ -44,9 +46,7 @@ export const ListItem = ({
   );
 };
 
-export interface IListItemProps {
-  shipName?: string;
-  typeName?: string;
-  portName?: string;
+export interface IListItemProps
+  extends Omit<IListItem, 'launches' | 'massKg' | 'yearBuild'> {
   onClick?: () => void;
 }
