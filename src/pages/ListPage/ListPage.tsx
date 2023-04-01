@@ -6,8 +6,8 @@ import arrowLeftIcon from '../../assets/icons/Arrow_Left.svg';
 import chevronLeftIcon from '../../assets/icons/Chevron_Left.svg';
 import chevronRightIcon from '../../assets/icons/Chevron_Right.svg';
 import { Input } from '../../components/Input/Input';
-import { useCallback, useState, useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '../../hooks';
+import { useCallback, useState, useEffect, useMemo } from 'react';
+import { debounce, useAppDispatch, useAppSelector } from '../../hooks';
 import { setTitleFilter } from '../../store/slices/filterSlice/filtersSlice';
 import { useParams, useNavigate } from 'react-router-dom';
 import { IListItem } from '../../store/slices/listSlice/listSlice.types';
@@ -25,9 +25,23 @@ export const ListPage = () => {
   const filters = useAppSelector((state) => state.filters);
   const dispatch = useAppDispatch();
 
-  const setTitleFilterState = useCallback((value: string) => {
-    dispatch(setTitleFilter({ title: value }));
-  }, []);
+  const setTitleFilterState = useCallback(
+    debounce((value: string) => {
+      dispatch(setTitleFilter({ title: value }));
+    }, 500),
+    []
+  );
+
+  const selectedPorts = useMemo(
+    () =>
+      Object.entries(filters.portOptions)
+        .map((value) => {
+          console.log(value);
+          if (value[1].isChecked) return value[0];
+        })
+        .filter((value) => value),
+    [filters.portOptions]
+  );
 
   const setPortOptionsFilter = useCallback((value: IListFilterOptions) => {
     dispatch(setPortOptions({ portOptions: value }));
@@ -37,28 +51,42 @@ export const ListPage = () => {
     dispatch(setSelectedShipType({ selectedShipType: value }));
   }, []);
 
+  const selectRequestOptions = [
+    'id',
+    'name',
+    'type',
+    'home_port',
+    'launches',
+    'year_built',
+    'mass_kg',
+  ];
+
   const [isMobileFilterModalOpen, setIsMobileFilterModalOpen] =
     useState<boolean>(false);
 
   const params = useParams();
   const navigate = useNavigate();
 
+  // Этот код я писал торопясь.
   useEffect(() => {
+    console.log(selectedPorts);
+  }, []);
+
+  useEffect(() => {
+    setIsLoading(true);
     axios
       .post('https://api.spacexdata.com/v4/ships/query', {
+        query: {
+          type: filters.selectedShipType,
+          name: { $regex: `${filters.title ? filters.title : '.'}` },
+          home_port: selectedPorts.length
+            ? { $in: [...selectedPorts] }
+            : { $regex: '.' },
+        },
         options: {
-          select: [
-            'id',
-            'name',
-            'type',
-            'home_port',
-            'launches',
-            'year_built',
-            'mass_kg',
-          ],
+          select: selectRequestOptions,
           limit: 5,
           page: params.pageNumber,
-          populate: [{ path: 'launches', select: ['name'] }],
         },
       })
       .then((data) => {
@@ -70,7 +98,12 @@ export const ListPage = () => {
         setPageInfo(data.data as IPageInfo);
         setIsLoading(false);
       });
-  }, [params.pageNumber]);
+  }, [
+    params.pageNumber,
+    filters.selectedShipType,
+    filters.title,
+    filters.portOptions,
+  ]);
 
   return (
     <div className='page'>
@@ -113,6 +146,7 @@ export const ListPage = () => {
                 radios={filters.shipTypes}
                 title='Тип'
                 onSelect={selectShipType}
+                currentCheckedRadioButton={filters.selectedShipType}
               />
             </div>
           </div>

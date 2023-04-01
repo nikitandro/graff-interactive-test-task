@@ -81,7 +81,7 @@ const ListInput = ({ title, onSelect, checkList }: IListInputProps) => {
   useEffect(() => {
     const filterOptions: IListFilterOptions = { ...checkList };
     setFilterOptions(filterOptions);
-  }, [checkList]);
+  }, []);
 
   useEffect(() => {
     onSelect && onSelect(filterOptions);
@@ -135,28 +135,23 @@ const ListInput = ({ title, onSelect, checkList }: IListInputProps) => {
   );
 };
 
-const RadioInput = ({ title, onSelect, radios }: IRadioInputProps) => {
-  const [radiosState, setRadiosState] = useState<IRadioFilterOptions>(
-    radios ? radios : {}
-  );
-  const [currentCheckedRadioButton, setCurrentCheckedRadioButton] = useState<
-    string | undefined
-  >(undefined);
-
-  useEffect(() => {
-    onSelect && onSelect(currentCheckedRadioButton);
-  }, [currentCheckedRadioButton]);
+const RadioInput = ({
+  title,
+  onSelect,
+  radios,
+  currentCheckedRadioButton,
+}: IRadioInputProps) => {
   return (
     <div className='radio-input'>
       <p className='input__title'>{title}</p>
       <div className='radio-input__buttons'>
-        {Object.entries(radiosState).map(([valueName, title]) => {
+        {Object.entries(radios ? radios : []).map(([valueName, title]) => {
           return (
             <RadioButton
               title={title}
               key={valueName}
               onCheck={(checkedValueName) => {
-                setCurrentCheckedRadioButton(checkedValueName);
+                onSelect && onSelect(checkedValueName);
               }}
               currentCheckedRadioButton={currentCheckedRadioButton}
               valueName={valueName}
@@ -192,4 +187,5 @@ export interface IRadioInputProps {
   type: 'radio';
   onSelect?: (selectedRadioButton: string | undefined) => void;
   radios?: IRadioFilterOptions;
+  currentCheckedRadioButton?: string;
 }
