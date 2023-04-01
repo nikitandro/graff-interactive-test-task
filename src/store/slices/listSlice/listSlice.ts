@@ -1,5 +1,6 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { IListSliceCaseReducers, IListState } from './listSlice.types';
+import axios from 'axios';
 
 const listSlice = createSlice<IListState, IListSliceCaseReducers>({
   name: 'list',
@@ -12,5 +13,9 @@ const listSlice = createSlice<IListState, IListSliceCaseReducers>({
 });
 
 export const { setList } = listSlice.actions;
+
+export const fetchShips = createAsyncThunk('list/fetchShips', async () => {
+  const response = await axios.get('');
+});
 
 export default listSlice.reducer;

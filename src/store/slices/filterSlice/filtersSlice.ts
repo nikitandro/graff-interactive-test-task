@@ -8,8 +8,26 @@ import {
 
 const initialState: IFiltersState = {
   title: '',
-  portOptions: {},
-  shipTypes: {},
+  portOptions: {
+    'Port of Los Angeles': {
+      title: 'Port of Los Angeles',
+      isChecked: false,
+    },
+    'Port Canaveral': {
+      title: 'Port Canaveral',
+      isChecked: false,
+    },
+    'Fort Lauderdale': {
+      title: 'Fort Lauderdale',
+      isChecked: false,
+    },
+  },
+  shipTypes: {
+    Cargo: 'Cargo',
+    Barge: 'Barge',
+    Tug: 'Tug',
+    'High Speed Craft': 'High Speed Craft',
+  },
   selectedShipType: undefined,
 };
 

@@ -10,7 +10,7 @@ export const Button = ({
   return (
     <button
       className={
-        `button ${children && icon ? '' : 'button_mono'}` +
+        `button ${children && icon ? ' ' : 'button_mono '}` +
         (className ? className : '')
       }
       {...props}

@@ -5,11 +5,11 @@ import { useCallback, useState } from 'react';
 import { IListItem } from '../../store/slices/listSlice/listSlice.types';
 
 export const ListItem = ({
-  portName,
+  home_port: portName,
   onClick,
-  shipName,
+  name: shipName,
   id,
-  shipType,
+  type: shipType,
 }: IListItemProps) => {
   const [isHovered, setIsHovered] = useState<boolean>();
 
